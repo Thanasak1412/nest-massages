@@ -8,18 +8,18 @@ import { Message } from './types/message.type';
 export class MessagesController {
   constructor(private messagesService: MessagesService) {}
 
-  @Post()
+  @Post('/')
   createMessage(@Body() body: CreateMessageDto) {
     return this.messagesService.create(body.content);
   }
 
-  @Get(':id')
-  getMessage(@Param('id') id: string): Promise<Message> {
-    return this.messagesService.findOne(id);
-  }
-
-  @Get()
+  @Get('/')
   getMessages() {
     return this.messagesService.findAll();
+  }
+
+  @Get('/:id')
+  getMessage(@Param('id') id: string): Promise<Message> {
+    return this.messagesService.findOne(id);
   }
 }
