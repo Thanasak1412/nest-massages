@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { MessagesRepository } from './messages.repository';
 
@@ -10,8 +10,14 @@ export class MessagesService {
     return this.messagesRepository.findAll();
   }
 
-  findOne(id: string) {
-    return this.messagesRepository.findOne(id);
+  async findOne(id: string) {
+    const message = await this.messagesRepository.findOne(id);
+
+    if (!message) {
+      throw new NotFoundException(`Message with ID "${id}" not found`);
+    }
+
+    return message;
   }
 
   create(message: string) {
